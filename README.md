@@ -4,17 +4,25 @@
 
 Clone the repository/Folder
 
-    git clone https://github.com/Ahmad-MHK/crm-vidian.gi
+    git clone https://github.com/Ahmad-MHK/crm-vidian.git
 
 
 switch to the folder
 
-    cd crm-vidian.git
+    cd crm-vidian
 
 install Composer and npm
 
     composer install
     npm install
+
+.env example copy
+
+    copy .env.example .env
+
+you Need a key
+
+    php artisan key:generate
 
 Run the database migrations 
 
@@ -27,7 +35,7 @@ Build your dependencies & start the local development server
 
 Run the database seeder
 
-php artisan db:seed
+    php artisan db:seed
 
 Default login Email :
 
@@ -54,7 +62,7 @@ All Commands
     npm run dev
     php artisan db:seed
 
-# of u get error with database
+## of u get error with database
 
 refresh database
 
