@@ -79,6 +79,21 @@ All Commands
     npm run dev
     php artisan db:seed
 
+# Issues with installing
+
+## ini
+of u have issue with ini and you are using XAMPP
+
+Open XAMPP and go to the apache of config and open PHP (php.ini)
+
+Control + F and search
+
+    ;extension=intl
+
+Change it to 
+
+    extension=intl
+
 ## of u get error with database
 
 refresh database
@@ -88,4 +103,3 @@ refresh database
 than u need to reintall your Seeder to login
 
     php artisan db:seed
-
