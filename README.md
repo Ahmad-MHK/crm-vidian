@@ -16,7 +16,7 @@ of it does not work Read this
 
     https://laravel.com/docs/10.x/installation
 
-## Installation
+## Installing the folder and Filament v3
 
 Clone the repository/Folder
 
@@ -54,21 +54,7 @@ Build your dependencies & start the local development server
     npm run build
     npm run dev
 
-Default login Email :
-
-    Admin@admin.com
-    
-    developer@admin.com
-    
-    Superadmin@admin.com
-    
-    moderator@admin.com
-
-Default login password:
-
-    password
-
-All Commands
+### All Commands
 
     git clone https://github.com/Ahmad-MHK/crm-vidian.git
     cd crm-vidian.git
@@ -82,9 +68,9 @@ All Commands
 # Issues with installing
 
 ## ini
-of u have issue with ini and you are using XAMPP
+if u have issue with php.ini and you are using XAMPP
 
-Open XAMPP and go to the apache of config and open PHP (php.ini)
+Open XAMPP and right next to APACHE there is config click on it and open PHP (php.ini)
 
 Control + F and search
 
@@ -103,3 +89,46 @@ refresh database
 than u need to reintall your Seeder to login
 
     php artisan db:seed
+
+# How to Start the Serve
+
+### XAMPP
+
+Start XAMPP and start Apach and MYSQL
+
+### Command
+
+Server starten
+
+    php artisan serve
+
+npm starten
+
+    npm dev run
+
+### Link
+
+    http://localhost:8000/admin
+
+## Login
+
+Default login Email :
+
+    Admin@admin.com
+    
+    developer@admin.com
+    
+    Superadmin@admin.com
+    
+    moderator@admin.com
+
+Default login password:
+
+    password
+
+## Issue with login Email/password
+
+Refresh your DB
+
+    php artisan db:seed
+    
