@@ -21,6 +21,7 @@ class User extends Authenticatable implements FilamentUser
     // use HasProfilePhoto;
     use HasRoles;
     use Notifiable;
+    
     use SoftDeletes;
     // use TwoFactorAuthenticatable;
 
