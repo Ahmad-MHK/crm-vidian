@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -65,7 +66,13 @@ class User extends Authenticatable implements FilamentUser
     //     'profile_photo_url',
     // ];
 
-    public function canAccessFilament(): bool {
-        return str_ends_with($this->email, '@admin.com' );
+    /**
+     * Check if the user can access the Filament panel.
+     *
+     * @param \Filament\Panel $panel
+     * @return bool
+     */
+    public function canAccessPanel(Panel $panel): bool {
+        return str_ends_with($this->email, '@admin.com');
     }
 }

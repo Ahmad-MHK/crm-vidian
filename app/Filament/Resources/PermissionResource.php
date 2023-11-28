@@ -4,8 +4,8 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
-use Filament\Resources\Form;
-use Filament\Resources\Table;
+use Filament\Forms\Form;
+use Filament\tables\Table;
 use Filament\Resources\Resource;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Eloquent\Builder;
@@ -15,6 +15,7 @@ use App\Filament\Resources\PermissionResource\RelationManagers;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
+
 
 class PermissionResource extends Resource
 {
