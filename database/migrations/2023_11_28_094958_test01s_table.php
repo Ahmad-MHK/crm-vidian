@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('test01s', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('debiteurnaam');
             $table->string('Bedrijf_user');
-            $table->string('Domain');
+            $table->string('Kvk');
+            $table->string('Btw');
+            $table->string('Db');
             $table->timestamps();
         });
     }

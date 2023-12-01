@@ -10,8 +10,10 @@ class Test01 extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'debiteurnaam',
         "Bedrijf_user",
-        "Domain",
+        "Kvk",
+        "Btw",
+        "Db",
     ];
 }

@@ -5,7 +5,9 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\Test01Resource\Pages;
 use App\Filament\Resources\Test01Resource\RelationManagers;
 use App\Models\Test01;
+use Filament\Actions\EditAction;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,14 +18,16 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Infolists\Components\Actions\Action;
+use Filament\Tables\Columns\Contracts\Editable;
 
 class Test01Resource extends Resource
 {
     protected static ?string $model = Test01::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
 
-    protected static ?string $recordTitleAttribute = "name";
+    protected static ?string $recordTitleAttribute = "debiteurnaam";
 
     // public static function getGloballySearchableAttributes(): array
     // {
@@ -44,18 +48,33 @@ class Test01Resource extends Resource
     }
 
     public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                TextInput::make('name')
-                    ->required()
-                    ->maxLength(50),
-                TextInput::make("Bedrijf_user")
-                    ->required(),
-                TextInput::make("Domain")
-                    ->required(),
-            ]);
-    }
+{
+    return $form
+        ->schema([
+
+            Section::make()
+                ->icon('heroicon-m-building-storefront')
+                ->description('This is a test')
+                ->collapsible()
+                // ->headerActions([
+                //     EditAction::make()
+                // ])
+                // This is under development this is to Edit insade the code
+                ->columns(2)
+                ->schema([
+                    TextInput::make('debiteurnaam')
+                        ->required()
+                        ->maxLength(50),
+                    TextInput::make("Bedrijf_user")
+                        ->required(),
+                    TextInput::make("Kvk"),
+                    TextInput::make("Btw"),
+                    TextInput::make("Db"),
+                ]),
+        ]);
+}
+
+
 
     public static function table(Table $table): Table
     {
