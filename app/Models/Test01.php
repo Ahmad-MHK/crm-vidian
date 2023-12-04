@@ -19,5 +19,13 @@ class Test01 extends Model
         'Email',
         'Domein',
         'Phone',
+        'UserName',
+        'Password',
+        'WordPress',
     ];
+
+    protected $casts = [
+        'WordPress' => 'json',
+    ];
+
 }

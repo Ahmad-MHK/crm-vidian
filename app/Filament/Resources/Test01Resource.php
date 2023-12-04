@@ -20,6 +20,7 @@ use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Infolists\Components\Actions\Action;
 use Filament\Tables\Columns\Contracts\Editable;
+use Filament\Forms\Components\Repeater;
 
 class Test01Resource extends Resource
 {
@@ -84,7 +85,18 @@ class Test01Resource extends Resource
                     TextInput::make('Phone')
                         ->tel(),
             ]),
-        ]);
+
+            Repeater::make('WordPress')
+                ->collapsible()
+                ->schema([
+                    TextInput::make("WordPress.*.UserName")
+                        ->label('User Name'),
+                    TextInput::make("WordPress.*.Password")
+                        ->label('Password')
+                ])
+                ->columns(1)
+
+            ]);
 }
 
 

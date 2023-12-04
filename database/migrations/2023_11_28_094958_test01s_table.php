@@ -4,6 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+use function Pest\Laravel\json;
+
 return new class extends Migration
 {
     /**
@@ -13,16 +15,19 @@ return new class extends Migration
     {
         Schema::create('test01s', function (Blueprint $table) {
             $table->id();
-            $table->string('debiteurnaam');
+            $table->string('debiteurnaam')->nullable();
             $table->string('bedrijfsNaam');
             $table->string('Bedrijf_user');
-            $table->string('Kvk');
-            $table->string('Btw');
-            $table->string('Db');
+            $table->string('Kvk')->nullable();
+            $table->string('Btw')->nullable();
+            $table->string('Db')->nullable();
             /** Db did not get the API for later develpment change it to id */
-            $table->string('Domein');
-            $table->string('Email');
-            $table->string('Phone');
+            $table->string('Domein')->nullable();
+            $table->string('Email')->nullable();
+            $table->string('Phone')->nullable();
+            $table->string('UserName')->nullable();
+            $table->string('Password')->nullable();
+            $table->json("WordPress")->nullable();
             $table->timestamps();
         });
     }
