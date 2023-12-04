@@ -27,11 +27,11 @@ class Test01Resource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
 
-    protected static ?string $recordTitleAttribute = "debiteurnaam";
+    protected static ?string $recordTitleAttribute = "bedrijfsNaam";
 
     // public static function getGloballySearchableAttributes(): array
     // {
-    //     return ["name", "Bedrijf_user","Domain"];
+    //     return ["bedrijfsNaam", "Bedrijf_user","Domain"];
     // }
 
     // public static function getGlobalSearchResultUrl(Model $record): string
@@ -59,10 +59,10 @@ class Test01Resource extends Resource
                 // ->headerActions([
                 //     EditAction::make()
                 // ])
-                // This is under development this is to Edit insade the code
+                // This is under development this is to Edit insade the info/view list
                 ->columns(2)
                 ->schema([
-                    TextInput::make('debiteurnaam')
+                    TextInput::make('bedrijfsNaam')
                         ->required()
                         ->maxLength(50),
                     TextInput::make("Bedrijf_user")
@@ -71,6 +71,19 @@ class Test01Resource extends Resource
                     TextInput::make("Btw"),
                     TextInput::make("Db"),
                 ]),
+
+            Section::make()
+                ->collapsible()
+                ->columns(2)
+                ->schema([
+                    // TextInput::make('bedrijfsNaam'),
+                    TextInput::make('debiteurnaam'),
+                    TextInput::make('Domein'),
+                    TextInput::make('Email')
+                        ->email(),
+                    TextInput::make('Phone')
+                        ->tel(),
+            ]),
         ]);
 }
 
