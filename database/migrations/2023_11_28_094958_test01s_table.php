@@ -28,6 +28,8 @@ return new class extends Migration
             $table->string('UserName')->nullable();
             $table->string('Password')->nullable();
             $table->json("WordPress")->nullable();
+            $table->json("Note")->nullable();
+            $table->longText('Notes')->nullable()->default('text');
             $table->timestamps();
         });
     }

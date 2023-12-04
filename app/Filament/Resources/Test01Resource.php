@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\Model;
 use Filament\Infolists\Components\Actions\Action;
 use Filament\Tables\Columns\Contracts\Editable;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\MarkdownEditor;
+
 
 class Test01Resource extends Resource
 {
@@ -94,9 +96,18 @@ class Test01Resource extends Resource
                     TextInput::make("WordPress.*.Password")
                         ->label('Password')
                 ])
-                ->columns(1)
+                ->columns(1),
 
-            ]);
+                Repeater::make('Note')
+                    ->collapsible()
+                    ->schema([
+                        MarkdownEditor::make('Notes'),
+                    ])
+                    ->columns(1)
+
+        ]);
+
+
 }
 
 
@@ -105,7 +116,7 @@ class Test01Resource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name'),
+                TextColumn::make('bedrijfsNaam'),
                 TextColumn::make("Bedrijf_user"),
                 TextColumn::make("Domain"),
             ])

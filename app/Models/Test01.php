@@ -22,10 +22,13 @@ class Test01 extends Model
         'UserName',
         'Password',
         'WordPress',
+        "Notes",
+        "Note",
     ];
 
     protected $casts = [
         'WordPress' => 'json',
+        'Note' => 'json',
     ];
 
 }
