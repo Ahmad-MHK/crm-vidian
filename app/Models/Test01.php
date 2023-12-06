@@ -17,17 +17,21 @@ class Test01 extends Model
         "Btw",
         "Db",
         'Email',
-        'Domein',
+        'Domain',
         'Phone',
         'UserName',
         'Password',
-        'WordPress',
+        'InlogNaam',
         "Notes",
         "Note",
+        'Algemeen',
+        'LogBoek',
+        'inlogGegevens',
+        'Contactpersonen',
     ];
 
     protected $casts = [
-        'WordPress' => 'json',
+        'inlogGegevens' => 'json',
         'Note' => 'json',
     ];
 

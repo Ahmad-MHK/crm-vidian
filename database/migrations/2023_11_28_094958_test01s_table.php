@@ -15,20 +15,24 @@ return new class extends Migration
     {
         Schema::create('test01s', function (Blueprint $table) {
             $table->id();
-            $table->string('debiteurnaam')->nullable();
-            $table->string('bedrijfsNaam');
+            $table->string('debiteurnaam');
+            $table->string('bedrijfsNaam')->nullable();
             $table->string('Bedrijf_user');
             $table->string('Kvk')->nullable();
             $table->string('Btw')->nullable();
             $table->string('Db')->nullable();
             /** Db did not get the API for later develpment change it to id */
-            $table->string('Domein')->nullable();
+            $table->string('Domain')->nullable();
             $table->string('Email')->nullable();
             $table->string('Phone')->nullable();
             $table->string('UserName')->nullable();
             $table->string('Password')->nullable();
-            $table->json("WordPress")->nullable();
+            $table->json("InlogNaam")->nullable();
             $table->json("Note")->nullable();
+            $table->string('Algemeen')->nullable();
+            $table->string('Contactpersonen')->nullable();
+            $table->string('LogBoek')->nullable();
+            $table->string('inlogGegevens')->nullable();
             $table->longText('Notes')->nullable()->default('text');
             $table->timestamps();
         });

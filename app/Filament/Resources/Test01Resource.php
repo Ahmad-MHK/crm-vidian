@@ -7,7 +7,6 @@ use App\Filament\Resources\Test01Resource\RelationManagers;
 use App\Models\Test01;
 use Filament\Actions\EditAction;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -29,6 +28,8 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\RepeatableEntry;
+use Filament\Infolists\Components\Section;
+
 
 
 
@@ -44,7 +45,7 @@ class Test01Resource extends Resource
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ["bedrijfsNaam", "Bedrijf_user","Domein"];
+        return ["bedrijfsNaam", "Bedrijf_user","Domain"];
     }
 
     public static function getGlobalSearchResultUrl(Model $record): string
@@ -65,7 +66,7 @@ class Test01Resource extends Resource
     return $form
         ->schema([
 
-            Section::make()
+            Section::make('Algemeen')
                 ->icon('heroicon-m-building-storefront')
                 ->description('This is a test')
                 ->collapsible()
@@ -75,7 +76,7 @@ class Test01Resource extends Resource
                 // This is under development this is to Edit insade the info/view list
                 ->columns(2)
                 ->schema([
-                    TextInput::make('bedrijfsNaam')
+                    TextInput::make('debiteurnaam')
                         ->required()
                         ->maxLength(50),
                     TextInput::make("Bedrijf_user")
@@ -92,23 +93,26 @@ class Test01Resource extends Resource
                         ]),
                 ]),
 
-            Section::make()
+            Section::make('Contactpersonen')
+                ->icon('heroicon-m-Phone')
                 ->collapsible()
                 ->columns(2)
                 ->schema([
-                    // TextInput::make('bedrijfsNaam'),
-                    TextInput::make('debiteurnaam'),
-                    TextInput::make('Domein'),
+                    TextInput::make('bedrijfsNaam'),
+                    TextInput::make('Domain'),
                     TextInput::make('Email')
                         ->email(),
                     TextInput::make('Phone')
                         ->tel(),
             ]),
 
-            Repeater::make('WordPress')
+            Repeater::make('inlogGegevens')
                 ->collapsible()
                 ->schema([
-                    TextInput::make("WordPress.*.UserName")
+                    TextInput::make("inlogGegevens.*.InlogNaam")
+                    ->label('Inlog Naam')
+                    ,
+                    TextInput::make("inlogGegevens.*.UserName")
                         ->label('User Name')
                         // ->suffixAction(
                         //     Action::make('copyCostToPrice')
@@ -120,7 +124,7 @@ class Test01Resource extends Resource
                         //         })
                         // )
                         ,
-                    TextInput::make("WordPress.*.Password")
+                    TextInput::make("inlogGegevens.*.Password")
                         ->label('Password')
                 ])
                 ->columns(1),
@@ -144,14 +148,19 @@ class Test01Resource extends Resource
     {
         return $table
             ->columns([
-                Split::make([
+                // Split::make([
+                TextColumn::make('Db')
+                ->sortable()
+                ->searchable()
+                ->toggleable()
+                ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('bedrijfsNaam')
                 ->sortable()
                 ->searchable()
                 ->toggleable(),
                 TextColumn::make("Bedrijf_user")
                 ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make("Domein")
+                TextColumn::make("Domain")
                 ->copyable()
                 ->toggleable(),
                 TextColumn::make('created_at')
@@ -165,7 +174,7 @@ class Test01Resource extends Resource
                         'published' => 'Published',
                     ])
                     ->toggleable(),
-                    ])->visibleFrom('md'),
+                    // ])->visibleFrom('md'),
 
                     // Panel::make([
                     //     Split::make([
@@ -221,25 +230,28 @@ class Test01Resource extends Resource
 //     return $infolist
 //         ->schema([
 //             Grid::make(3)
-//             ->columns([
-//                 'sm' => 3,
-//                 'xl' => 6,
-//                 '2xl' => 8,
-//             ])
 //                 ->columnStart(1)
 //                 ->schema([
-//                     TextEntry::make('bedrijfsNaam'),
+//                     TextEntry::make('Db'),
 //                     TextEntry::make('Bedrijf_user'),
-//                 ])
-//                 ->columnStart(2)
-//                 ->schema([
-//                     TextEntry::make('Kvk'),
-//                     TextEntry::make('Btw'),
 //                 ])
 //                 ->columnStart(3)
 //                 ->schema([
-//                     TextEntry::make('Db'),
+//                     TextEntry::make('Kvk'),
 //                     TextEntry::make('Status'),
+//                 ])
+//                 ->columnStart(2)
+//                 ->schema([
+//                     Section::make('inlogGegevens')
+//                     ->columns([
+//                         'sm' => 2,
+//                         'xl' => 6,
+//                         '2xl' => 8,
+//                     ])
+//                         ->schema([
+//                         TextEntry::make('Db'),
+//                         TextEntry::make('Btw'),
+//                         ])
 //                 ]),
 //         ]);
 // }
