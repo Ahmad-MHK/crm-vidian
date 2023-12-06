@@ -225,36 +225,46 @@ class Test01Resource extends Resource
         ];
     }
 
-//     public static function infolist(Infolist $infolist): Infolist
-// {
-//     return $infolist
-//         ->schema([
-//             Grid::make(3)
-//                 ->columnStart(1)
-//                 ->schema([
-//                     TextEntry::make('Db'),
-//                     TextEntry::make('Bedrijf_user'),
-//                 ])
-//                 ->columnStart(3)
-//                 ->schema([
-//                     TextEntry::make('Kvk'),
-//                     TextEntry::make('Status'),
-//                 ])
-//                 ->columnStart(2)
-//                 ->schema([
-//                     Section::make('inlogGegevens')
-//                     ->columns([
-//                         'sm' => 2,
-//                         'xl' => 6,
-//                         '2xl' => 8,
-//                     ])
-//                         ->schema([
-//                         TextEntry::make('Db'),
-//                         TextEntry::make('Btw'),
-//                         ])
-//                 ]),
-//         ]);
-// }
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Grid::make(3)
+                    ->columnStart(1)
+                    ->schema([
+                        Section::make('Algemeen')
+                            ->columns(1)
+                            ->schema([
+                                TextEntry::make('Bedrijf_user'),
+                            ]),
+                    ])
+                    ->columnStart(2)
+                    ->schema([
+                        Section::make('Contactpersonen')
+                            ->columns(1)
+                            ->schema([
+                                TextEntry::make('Phone'),
+                            ]),
+                    ])
+                    ->columnStart(3)
+                    ->schema([
+                        RepeatableEntry::make('inlogGegevens')
+                            ->columns(1)
+                            ->schema([
+                                TextEntry::make('InlogNaam')
+                                    ->copyable()
+                                    ->copyMessage('Copied!'),
+                                TextEntry::make('UserName')
+                                    ->copyable()
+                                    ->copyMessage('Copied!'),
+                                TextEntry::make('Password')  // Corrected field reference
+                                    ->copyable()
+                                    ->copyMessage('Copied!'),
+                            ])
+
+                    ]),
+            ]);
+    }
 
 
 
