@@ -14,7 +14,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
@@ -22,6 +21,13 @@ use Filament\Infolists\Components\Actions\Action;
 use Filament\Tables\Columns\Contracts\Editable;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\SelectColumn;
+use Filament\Tables\Columns\Layout\Panel;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
+
 
 
 class Test01Resource extends Resource
@@ -32,15 +38,15 @@ class Test01Resource extends Resource
 
     protected static ?string $recordTitleAttribute = "bedrijfsNaam";
 
-    // public static function getGloballySearchableAttributes(): array
-    // {
-    //     return ["bedrijfsNaam", "Bedrijf_user","Domain"];
-    // }
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ["bedrijfsNaam", "Bedrijf_user","Domain"];
+    }
 
-    // public static function getGlobalSearchResultUrl(Model $record): string
-    // {
-    //     return Test01Resource::getUrl('edit', ['record' => $record]);
-    // }
+    public static function getGlobalSearchResultUrl(Model $record): string
+    {
+        return Test01Resource::getUrl('edit', ['record' => $record]);
+    }
 
     public static function getGlobalSearchResultDetails(Model $record): array
     {
@@ -73,6 +79,13 @@ class Test01Resource extends Resource
                     TextInput::make("Kvk"),
                     TextInput::make("Btw"),
                     TextInput::make("Db"),
+                    Select::make('Status')
+                    ->native(false)
+                        ->options([
+                            'draft' => 'Draft',
+                            'reviewing' => 'Reviewing',
+                            'published' => 'Published',
+                        ]),
                 ]),
 
             Section::make()
@@ -92,7 +105,17 @@ class Test01Resource extends Resource
                 ->collapsible()
                 ->schema([
                     TextInput::make("WordPress.*.UserName")
-                        ->label('User Name'),
+                        ->label('User Name')
+                        // ->suffixAction(
+                        //     Action::make('copyCostToPrice')
+                        //         ->icon('heroicon-m-clipboard')
+                        //         ->requiresConfirmation()
+                        //         ->action(function (Test01 $record) {
+                        //             $record->Username;
+                        //             $record->save();
+                        //         })
+                        // )
+                        ,
                     TextInput::make("WordPress.*.Password")
                         ->label('Password')
                 ])
@@ -108,17 +131,50 @@ class Test01Resource extends Resource
         ]);
 
 
-}
 
+
+}
 
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('bedrijfsNaam'),
-                TextColumn::make("Bedrijf_user"),
-                TextColumn::make("Domain"),
+                Split::make([
+                TextColumn::make('bedrijfsNaam')
+                ->sortable()
+                ->searchable()
+                ->toggleable(),
+                TextColumn::make("Bedrijf_user")
+                ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make("Domein")
+                ->copyable()
+                ->toggleable(),
+                TextColumn::make('created_at')
+                    ->sortable()
+                    ->dateTime()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                SelectColumn::make('Status')
+                    ->options([
+                        'draft' => 'Draft',
+                        'reviewing' => 'Reviewing',
+                        'published' => 'Published',
+                    ])
+                    ->toggleable(),
+                    ])->visibleFrom('md'),
+
+                    // Panel::make([
+                    //     Split::make([
+                    //         TextColumn::make('Phone')
+                    //             ->icon('heroicon-m-phone'),
+                    //         TextColumn::make('Email')
+                    //             ->icon('heroicon-m-envelope'),
+                    //     ])->from('sm'),
+                    // ])->collapsed()
+
+                    // later developemnt for UserName and Password that u can get that from repeater and fet data every User
+
+
             ])
             ->filters([
                 //
@@ -137,6 +193,8 @@ class Test01Resource extends Resource
             ]);
     }
 
+
+
     public static function getRelations(): array
     {
         return [
@@ -152,5 +210,13 @@ class Test01Resource extends Resource
             'view' => Pages\ViewTest01::route('/{record}'),
             'edit' => Pages\EditTest01::route('/{record}/edit'),
         ];
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+    return $infolist
+        ->schema([
+            TextEntry::make('bedrijfsNaam')
+        ]);
     }
 }
