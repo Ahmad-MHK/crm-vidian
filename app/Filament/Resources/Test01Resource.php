@@ -27,6 +27,10 @@ use Filament\Tables\Columns\Layout\Panel;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
+use Filament\Infolists\Components\Grid;
+use Filament\Infolists\Components\RepeatableEntry;
+
+
 
 
 
@@ -40,7 +44,7 @@ class Test01Resource extends Resource
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ["bedrijfsNaam", "Bedrijf_user","Domain"];
+        return ["bedrijfsNaam", "Bedrijf_user","Domein"];
     }
 
     public static function getGlobalSearchResultUrl(Model $record): string
@@ -212,11 +216,34 @@ class Test01Resource extends Resource
         ];
     }
 
-    public static function infolist(Infolist $infolist): Infolist
-    {
-    return $infolist
-        ->schema([
-            TextEntry::make('bedrijfsNaam')
-        ]);
-    }
+//     public static function infolist(Infolist $infolist): Infolist
+// {
+//     return $infolist
+//         ->schema([
+//             Grid::make(3)
+//             ->columns([
+//                 'sm' => 3,
+//                 'xl' => 6,
+//                 '2xl' => 8,
+//             ])
+//                 ->columnStart(1)
+//                 ->schema([
+//                     TextEntry::make('bedrijfsNaam'),
+//                     TextEntry::make('Bedrijf_user'),
+//                 ])
+//                 ->columnStart(2)
+//                 ->schema([
+//                     TextEntry::make('Kvk'),
+//                     TextEntry::make('Btw'),
+//                 ])
+//                 ->columnStart(3)
+//                 ->schema([
+//                     TextEntry::make('Db'),
+//                     TextEntry::make('Status'),
+//                 ]),
+//         ]);
+// }
+
+
+
 }
