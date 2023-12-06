@@ -7,6 +7,7 @@ use App\Filament\Resources\Test01Resource\RelationManagers;
 use App\Models\Test01;
 use Filament\Actions\EditAction;
 use Filament\Forms;
+// use Filament\Forms\Components\Group;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -23,12 +24,16 @@ use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\Layout\Panel;
-use Filament\Tables\Columns\Layout\Split;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\RepeatableEntry;
-use Filament\Infolists\Components\Section;
+use Filament\Forms\Components\Section;
+// use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\Split;
+// use Filament\Tables\Columns\Layout\Split;
+use Filament\Infolists\Components\Group;
+
 
 
 
@@ -228,44 +233,61 @@ class Test01Resource extends Resource
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist
-            ->schema([
-                Grid::make(3)
-                    ->columnStart(1)
-                    ->schema([
-                        Section::make('Algemeen')
-                            ->columns(1)
-                            ->schema([
-                                TextEntry::make('Bedrijf_user'),
+            ->Schema([
+                Grid::make(1)
+                    ->schema ([
+                        Group::make([
+                            Group::make([
+                                Section::make('Algemeen')
+                                ->icon('heroicon-m-building-storefront')
+                                ->description('This a Description')
+                                ->collapsible()
+                                    ->schema([
+                                        TextEntry::make('debiteurnaam'),
+                                        TextEntry::make('Bedrijf_user'),
+                                        TextEntry::make('Kvk'),
+                                        TextEntry::make('Btw'),
+                                        TextEntry::make('Db'),
+                                        TextEntry::make('Status'),
+                                    ])
                             ]),
-                    ])
-                    ->columnStart(2)
-                    ->schema([
-                        Section::make('Contactpersonen')
-                            ->columns(1)
-                            ->schema([
-                                TextEntry::make('Phone'),
+                            Group::make([
+                                Section::make('Contactpersonen')
+                                ->icon('heroicon-m-Phone')
+                                ->description('This a Description')
+                                ->collapsible()
+                                    ->schema([
+                                        TextEntry::make('bedrijfsNaam'),
+                                        TextEntry::make('Domain'),
+                                        TextEntry::make('Email'),
+                                        TextEntry::make('Phone'),
+                                    ]),
+                                RepeatableEntry::make('Note')
+                                ->schema([
+                                    TextEntry::make('Notes'),
+                                ])
                             ]),
-                    ])
-                    ->columnStart(3)
-                    ->schema([
-                        RepeatableEntry::make('inlogGegevens')
-                            ->columns(1)
-                            ->schema([
-                                TextEntry::make('InlogNaam')
-                                    ->copyable()
-                                    ->copyMessage('Copied!'),
-                                TextEntry::make('UserName')
-                                    ->copyable()
-                                    ->copyMessage('Copied!'),
-                                TextEntry::make('Password')  // Corrected field reference
-                                    ->copyable()
-                                    ->copyMessage('Copied!'),
+                            Group::make([
+                                RepeatableEntry::make('inlogGegevens')
+                                    ->columns(1)
+                                    ->schema([
+                                        TextEntry::make('InlogNaam')
+                                            ->copyable()
+                                            ->copyMessage('Copied!'),
+                                        TextEntry::make('UserName')
+                                            ->copyable()
+                                            ->copyMessage('Copied!'),
+                                        TextEntry::make('Password')
+                                            ->copyable()
+                                            ->copyMessage('Copied!'),
+                                    ])
                             ])
-
-                    ]),
+                        ])
+                    ->columns(3),
+                    ])
             ]);
     }
 
-
+// Group::make([])
 
 }
