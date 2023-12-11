@@ -7,7 +7,7 @@ use App\Filament\Resources\Test01Resource\RelationManagers;
 use App\Models\Test01;
 use Filament\Actions\EditAction;
 use Filament\Forms;
-// use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Group as FormGroup;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -17,7 +17,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
-use Filament\Infolists\Components\Actions\Action;
 use Filament\Tables\Columns\Contracts\Editable;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\MarkdownEditor;
@@ -28,16 +27,13 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\RepeatableEntry;
-use Filament\Forms\Components\Section;
-// use Filament\Infolists\Components\Section;
-use Filament\Infolists\Components\Split;
-// use Filament\Tables\Columns\Layout\Split;
+use Filament\Forms\Components\Section as FormSection;
+use Filament\Infolists\Components\Section as InfolistSection;
+// use Filament\Infolists\Components\Split as InfolistSplit;
+// use Filament\Tables\Columns\Layout\Split as TableColumnSplit;
 use Filament\Infolists\Components\Group;
-
-
-
-
-
+use Filament\Infolists;
+use Filament\Infolists\Components\Actions\Action;
 
 
 class Test01Resource extends Resource
@@ -71,14 +67,10 @@ class Test01Resource extends Resource
     return $form
         ->schema([
 
-            Section::make('Algemeen')
+            FormSection::make('Algemeen')
                 ->icon('heroicon-m-building-storefront')
                 ->description('This is a test')
                 ->collapsible()
-                // ->headerActions([
-                //     EditAction::make()
-                // ])
-                // This is under development this is to Edit insade the info/view list
                 ->columns(2)
                 ->schema([
                     TextInput::make('debiteurnaam')
@@ -98,7 +90,7 @@ class Test01Resource extends Resource
                         ]),
                 ]),
 
-            Section::make('Contactpersonen')
+            FormSection::make('Contactpersonen')
                 ->icon('heroicon-m-Phone')
                 ->collapsible()
                 ->columns(2)
@@ -110,37 +102,24 @@ class Test01Resource extends Resource
                     TextInput::make('Phone')
                         ->tel(),
             ]),
-
-            Repeater::make('inlogGegevens')
-                ->collapsible()
-                ->schema([
-                    TextInput::make("inlogGegevens.*.InlogNaam")
-                    ->label('Inlog Naam')
-                    ,
-                    TextInput::make("inlogGegevens.*.UserName")
-                        ->label('User Name')
-                        // ->suffixAction(
-                        //     Action::make('copyCostToPrice')
-                        //         ->icon('heroicon-m-clipboard')
-                        //         ->requiresConfirmation()
-                        //         ->action(function (Test01 $record) {
-                        //             $record->Username;
-                        //             $record->save();
-                        //         })
-                        // )
-                        ,
-                    TextInput::make("inlogGegevens.*.Password")
-                        ->label('Password')
+                FormGroup::make([
+                    Repeater::make('inlogGegevens')
+                        ->collapsible()
+                        ->schema([
+                            TextInput::make("InlogNaam"),
+                            TextInput::make("UserName"),
+                            TextInput::make("Password")
+                        ])
+                        ->columns(1),
+                ]),
+                FormGroup::make([
+                    Repeater::make('Note')
+                        ->collapsible()
+                        ->schema([
+                            MarkdownEditor::make('Notes'),
+                        ])
+                        ->columns(1)
                 ])
-                ->columns(1),
-
-                Repeater::make('Note')
-                    ->collapsible()
-                    ->schema([
-                        MarkdownEditor::make('Notes'),
-                    ])
-                    ->columns(1)
-
         ]);
 
 
@@ -179,20 +158,6 @@ class Test01Resource extends Resource
                         'published' => 'Published',
                     ])
                     ->toggleable(),
-                    // ])->visibleFrom('md'),
-
-                    // Panel::make([
-                    //     Split::make([
-                    //         TextColumn::make('Phone')
-                    //             ->icon('heroicon-m-phone'),
-                    //         TextColumn::make('Email')
-                    //             ->icon('heroicon-m-envelope'),
-                    //     ])->from('sm'),
-                    // ])->collapsed()
-
-                    // later developemnt for UserName and Password that u can get that from repeater and fet data every User
-
-
             ])
             ->filters([
                 //
@@ -238,10 +203,13 @@ class Test01Resource extends Resource
                     ->schema ([
                         Group::make([
                             Group::make([
-                                Section::make('Algemeen')
+                                InfolistSection::make('Algemeen')
                                 ->icon('heroicon-m-building-storefront')
                                 ->description('This a Description')
                                 ->collapsible()
+                                // ->headerActions([
+                                    // EditAction::make(),
+                                // ])
                                     ->schema([
                                         TextEntry::make('debiteurnaam'),
                                         TextEntry::make('Bedrijf_user'),
@@ -252,7 +220,7 @@ class Test01Resource extends Resource
                                     ])
                             ]),
                             Group::make([
-                                Section::make('Contactpersonen')
+                                InfolistSection::make('Contactpersonen')
                                 ->icon('heroicon-m-Phone')
                                 ->description('This a Description')
                                 ->collapsible()
@@ -272,14 +240,34 @@ class Test01Resource extends Resource
                                     ->columns(1)
                                     ->schema([
                                         TextEntry::make('InlogNaam')
-                                            ->copyable()
-                                            ->copyMessage('Copied!'),
+                                        ->suffixAction(
+                                            Action::make('copyCostToPrice')
+                                                ->icon('heroicon-m-clipboard')
+                                                ->action(function (Test01 $record) {
+                                                    $record->Password;
+                                                    $record->save();
+                                                })
+                                        )
+                                        ,
                                         TextEntry::make('UserName')
-                                            ->copyable()
-                                            ->copyMessage('Copied!'),
+                                        ->suffixAction(
+                                            Action::make('copyCostToPrice')
+                                                ->icon('heroicon-m-clipboard')
+                                                ->action(function (Test01 $record) {
+                                                    $record->Password;
+                                                    $record->save();
+                                                })
+                                        ),
                                         TextEntry::make('Password')
-                                            ->copyable()
-                                            ->copyMessage('Copied!'),
+                                        ->suffixAction(
+                                            Action::make('copyCostToPrice')
+                                                ->icon('heroicon-m-clipboard')
+                                                ->action(function (Test01 $record) {
+                                                    $record->Password;
+                                                    $record->save();
+                                                })
+                                        )
+                                        ,
                                     ])
                             ])
                         ])
