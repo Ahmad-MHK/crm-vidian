@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Test01 extends Model
 {
     use HasFactory;
+    // use HasUsers;
 
     protected $fillable = [
         'bedrijfsNaam',

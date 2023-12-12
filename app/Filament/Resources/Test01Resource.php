@@ -34,6 +34,8 @@ use Filament\Infolists\Components\Section as InfolistSection;
 use Filament\Infolists\Components\Group;
 use Filament\Infolists;
 use Filament\Infolists\Components\Actions\Action;
+use Filament\Forms\Components\Radio;
+use App\Filament\Resources\test01Resource\RelationManagers\UsersRelationManager;
 
 
 class Test01Resource extends Resource
@@ -76,8 +78,13 @@ class Test01Resource extends Resource
                     TextInput::make('debiteurnaam')
                         ->required()
                         ->maxLength(50),
-                    TextInput::make("Bedrijf_user")
+                    // TextInput::make("Bedrijf_user")
+                    //     ->required(),
+                        Select::make('Bedrijf_user')
+                        ->relationship('users', 'name')
+                        ->searchable()
                         ->required(),
+
                     TextInput::make("Kvk"),
                     TextInput::make("Btw"),
                     TextInput::make("Db"),
@@ -121,10 +128,6 @@ class Test01Resource extends Resource
                         ->columns(1)
                 ])
         ]);
-
-
-
-
 }
 
 
@@ -174,15 +177,6 @@ class Test01Resource extends Resource
             ->emptyStateActions([
                 Tables\Actions\CreateAction::make(),
             ]);
-    }
-
-
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array
@@ -276,6 +270,11 @@ class Test01Resource extends Resource
             ]);
     }
 
-// Group::make([])
+    public static function getRelations(): array
+    {
+        return [
+            UsersRelationManager::class,
+            ];
+    }
 
 }
