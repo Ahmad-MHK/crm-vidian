@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('Kvk')->nullable();
             $table->string('Btw')->nullable();
             $table->string('Db')->nullable();
-            /** Db did not get the API for later develpment change it to id */
             $table->string('Domain')->nullable();
             $table->string('Email')->nullable();
             $table->string('Phone')->nullable();

@@ -3,10 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\Test01Resource\Pages;
-use App\Filament\Resources\Test01Resource\RelationManagers;
 use App\Models\Test01;
-use Filament\Actions\EditAction;
-use Filament\Forms;
 use Filament\Forms\Components\Group as FormGroup;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -14,27 +11,19 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
-use Filament\Tables\Columns\Contracts\Editable;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\SelectColumn;
-use Filament\Tables\Columns\Layout\Panel;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Forms\Components\Section as FormSection;
 use Filament\Infolists\Components\Section as InfolistSection;
-// use Filament\Infolists\Components\Split as InfolistSplit;
-// use Filament\Tables\Columns\Layout\Split as TableColumnSplit;
 use Filament\Infolists\Components\Group;
-use Filament\Infolists;
 use Filament\Infolists\Components\Actions\Action;
-use Filament\Forms\Components\Radio;
 use App\Filament\Resources\test01Resource\RelationManagers\UsersRelationManager;
 
 
@@ -72,34 +61,42 @@ class Test01Resource extends Resource
             FormSection::make('Algemeen')
                 ->icon('heroicon-m-building-storefront')
                 ->description('This is a test')
-                ->collapsible()
                 ->columns(2)
                 ->schema([
                     TextInput::make('debiteurnaam')
                         ->required()
                         ->maxLength(50),
-                    // TextInput::make("Bedrijf_user")
-                    //     ->required(),
-                        Select::make('Bedrijf_user')
-                        ->relationship('users', 'name')
-                        ->searchable()
+                    TextInput::make("Bedrijf_user")
                         ->required(),
+
+                    // Select::make('Bedrijf_user')
+                    //     ->relationship('users', 'name')
+                    //     ->searchable()
+                    //     ->required(),
 
                     TextInput::make("Kvk"),
                     TextInput::make("Btw"),
                     TextInput::make("Db"),
                     Select::make('Status')
                     ->native(false)
-                        ->options([
-                            'draft' => 'Draft',
-                            'reviewing' => 'Reviewing',
-                            'published' => 'Published',
-                        ]),
+                    ->multiple()
+                    ->searchable()
+                    ->options([
+                        'nieuwKlant' => 'Nieuw klant',
+                        'nieuwAbonnee' => 'Nieuw Abonnee',
+                        'klant' => 'Klant',
+                        'abonnee' => 'Abonnee',
+                        'opzegd' => 'Opzegd',
+                        'leverancier' => 'Leverancier',
+                        'reseller' => 'Reseller',
+                        'zakelijkeKlant' => 'Zakelijke Klant',
+                        'overige' => 'Overige',
+                        'geenrelatie' => 'Geen Relatie',
+                    ]),
                 ]),
 
             FormSection::make('Contactpersonen')
                 ->icon('heroicon-m-Phone')
-                ->collapsible()
                 ->columns(2)
                 ->schema([
                     TextInput::make('bedrijfsNaam'),
@@ -108,7 +105,7 @@ class Test01Resource extends Resource
                         ->email(),
                     TextInput::make('Phone')
                         ->tel(),
-            ]),
+                ]),
                 FormGroup::make([
                     Repeater::make('inlogGegevens')
                         ->collapsible()
@@ -135,21 +132,20 @@ class Test01Resource extends Resource
     {
         return $table
             ->columns([
-                // Split::make([
                 TextColumn::make('Db')
-                ->sortable()
-                ->searchable()
-                ->toggleable()
-                ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('bedrijfsNaam')
-                ->sortable()
-                ->searchable()
-                ->toggleable(),
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make("Bedrijf_user")
-                ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make("Domain")
-                ->copyable()
-                ->toggleable(),
+                    ->copyable()
+                    ->toggleable(),
                 TextColumn::make('created_at')
                     ->sortable()
                     ->dateTime()
@@ -166,7 +162,6 @@ class Test01Resource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -200,10 +195,6 @@ class Test01Resource extends Resource
                                 InfolistSection::make('Algemeen')
                                 ->icon('heroicon-m-building-storefront')
                                 ->description('This a Description')
-                                ->collapsible()
-                                // ->headerActions([
-                                    // EditAction::make(),
-                                // ])
                                     ->schema([
                                         TextEntry::make('debiteurnaam'),
                                         TextEntry::make('Bedrijf_user'),
@@ -217,7 +208,6 @@ class Test01Resource extends Resource
                                 InfolistSection::make('Contactpersonen')
                                 ->icon('heroicon-m-Phone')
                                 ->description('This a Description')
-                                ->collapsible()
                                     ->schema([
                                         TextEntry::make('bedrijfsNaam'),
                                         TextEntry::make('Domain'),
@@ -273,7 +263,7 @@ class Test01Resource extends Resource
     public static function getRelations(): array
     {
         return [
-            UsersRelationManager::class,
+            // UsersRelationManager::class,
             ];
     }
 

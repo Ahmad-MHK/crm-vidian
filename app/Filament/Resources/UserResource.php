@@ -2,22 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
 use App\Models\User;
-use Filament\Tables;
 use Filament\Pages\Page;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
-use Filament\Forms\Components\Radio;
 use Illuminate\Support\Facades\Hash;
 use Filament\Forms\Components\Toggle;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\DeleteAction;
-use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Forms\Components\CheckboxList;
@@ -25,11 +21,8 @@ use Filament\Tables\Actions\DeleteBulkAction;
 use App\Filament\Resources\UserResource\Pages;
 use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Tables\Actions\ForceDeleteBulkAction;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\UserResource\Pages\EditUser;
-use App\Filament\Resources\UserResource\Pages\ListUsers;
 use App\Filament\Resources\UserResource\Pages\CreateUser;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Filament\Resources\UserResource\RelationManagers\RolesRelationManager;
 
 class UserResource extends Resource
@@ -71,18 +64,11 @@ class UserResource extends Resource
                             ($livewire instanceof EditUser) ? 'New Password' : 'Password'
                         ),
 
-                        CheckboxList::make('roles')
+                    CheckboxList::make('roles')
                         ->relationship('roles', 'name')
                         ->columns(2)
                         ->helperText('Only Choose One!')
                         ->required()
-
-                        // Radio::make('roles')
-                        // ->relationship('roles', 'name')
-                        // ->options(function ($value) {
-                        //     return [$value => $value];
-                        // })
-                        // ->required()
                 ])
             ]);
     }
