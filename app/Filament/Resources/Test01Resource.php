@@ -37,7 +37,7 @@ class Test01Resource extends Resource
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ["bedrijfsNaam", "Bedrijf_user","Domain"];
+        return ["bedrijfsNaam",];
     }
 
     public static function getGlobalSearchResultUrl(Model $record): string
@@ -50,6 +50,10 @@ class Test01Resource extends Resource
         return [
             'Bedrijf_user' => $record->Bedrijf_user,
             'Domain' => $record->Domain,
+            'Email' => $record->Email,
+            'Phone' => $record->Phone,
+            'Db' => $record->Db,
+            'Status' => $record->Status,
         ];
     }
 
@@ -74,11 +78,12 @@ class Test01Resource extends Resource
                     //     ->searchable()
                     //     ->required(),
 
-                    TextInput::make("Kvk"),
-                    TextInput::make("Btw"),
+                    TextInput::make("Kvk")
+                    ->label('kvk-nummer'),
+                    TextInput::make("Btw")
+                    ->label('Btw-nummer'),
                     TextInput::make("Db"),
                     Select::make('Status')
-                    ->native(false)
                     ->multiple()
                     ->searchable()
                     ->options([
@@ -92,7 +97,8 @@ class Test01Resource extends Resource
                         'zakelijkeKlant' => 'Zakelijke Klant',
                         'overige' => 'Overige',
                         'geenrelatie' => 'Geen Relatie',
-                    ]),
+                    ])
+                    ->preload(),
                 ]),
 
             FormSection::make('Contactpersonen')
@@ -110,9 +116,12 @@ class Test01Resource extends Resource
                     Repeater::make('inlogGegevens')
                         ->collapsible()
                         ->schema([
-                            TextInput::make("InlogNaam"),
-                            TextInput::make("UserName"),
+                            TextInput::make("InlogNaam")
+                            ->label('URL'),
+                            TextInput::make("UserName")
+                            ->label('Username'),
                             TextInput::make("Password")
+                            ->label('Password'),
                         ])
                         ->columns(1),
                 ]),
@@ -131,6 +140,8 @@ class Test01Resource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultPaginationPageOption(25)
+            ->paginated([ 25, 50, 100, 'all'])
             ->columns([
                 TextColumn::make('Db')
                     ->sortable()
@@ -139,23 +150,50 @@ class Test01Resource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('bedrijfsNaam')
                     ->sortable()
-                    ->searchable()
                     ->toggleable(),
                 TextColumn::make("Bedrijf_user")
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make("Domain")
+                    ->sortable()
                     ->copyable()
                     ->toggleable(),
+                TextColumn::make("Email")
+                    ->sortable()
+                    ->copyable()
+                    ->toggleable(),
+                TextColumn::make("Phone")
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make("kvk")
+                    ->sortable()
+                    ->label('kvk-nummer')
+                    ->copyable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make("btw")
+                    ->sortable()
+                    ->label('btw-nummer')
+                    ->copyable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->sortable()
                     ->dateTime()
                     ->toggleable(isToggledHiddenByDefault: true),
                 SelectColumn::make('Status')
+                    ->sortable()
                     ->options([
-                        'draft' => 'Draft',
-                        'reviewing' => 'Reviewing',
-                        'published' => 'Published',
+                        'nieuwKlant' => 'Nieuw klant',
+                        'nieuwAbonnee' => 'Nieuw Abonnee',
+                        'klant' => 'Klant',
+                        'abonnee' => 'Abonnee',
+                        'opzegd' => 'Opzegd',
+                        'leverancier' => 'Leverancier',
+                        'reseller' => 'Reseller',
+                        'zakelijkeKlant' => 'Zakelijke Klant',
+                        'overige' => 'Overige',
+                        'geenrelatie' => 'Geen Relatie',
                     ])
+                    // ->beforeStateUpdated(function ($record, $state) {}) // Runs before the state is saved to the database.
+                    // ->afterStateUpdated(function ($record, $state) {}) // Runs after the state is saved to the database.
                     ->toggleable(),
             ])
             ->filters([
@@ -198,8 +236,10 @@ class Test01Resource extends Resource
                                     ->schema([
                                         TextEntry::make('debiteurnaam'),
                                         TextEntry::make('Bedrijf_user'),
-                                        TextEntry::make('Kvk'),
-                                        TextEntry::make('Btw'),
+                                        TextEntry::make('Kvk')
+                                        ->label('kvk-nummer'),
+                                        TextEntry::make('Btw')
+                                        ->label('btw-nummer'),
                                         TextEntry::make('Db'),
                                         TextEntry::make('Status'),
                                     ])
@@ -224,6 +264,7 @@ class Test01Resource extends Resource
                                     ->columns(1)
                                     ->schema([
                                         TextEntry::make('InlogNaam')
+                                        ->label('URL')
                                         ->suffixAction(
                                             Action::make('copyCostToPrice')
                                                 ->icon('heroicon-m-clipboard')
@@ -234,6 +275,7 @@ class Test01Resource extends Resource
                                         )
                                         ,
                                         TextEntry::make('UserName')
+                                        ->label('Username')
                                         ->suffixAction(
                                             Action::make('copyCostToPrice')
                                                 ->icon('heroicon-m-clipboard')
@@ -243,6 +285,7 @@ class Test01Resource extends Resource
                                                 })
                                         ),
                                         TextEntry::make('Password')
+                                        ->label('Password')
                                         ->suffixAction(
                                             Action::make('copyCostToPrice')
                                                 ->icon('heroicon-m-clipboard')
@@ -266,5 +309,7 @@ class Test01Resource extends Resource
             // UsersRelationManager::class,
             ];
     }
+
+
 
 }

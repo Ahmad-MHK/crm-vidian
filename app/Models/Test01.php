@@ -29,11 +29,22 @@ class Test01 extends Model
         'LogBoek',
         'inlogGegevens',
         'Contactpersonen',
+        'nieuwKlant',
+        'nieuwAbonnee',
+        'klant',
+        'abonnee',
+        'opzegd',
+        'leverancier',
+        'reseller',
+        'zakelijkeKlant',
+        'overige',
+        'geenrelatie',
     ];
 
     protected $casts = [
         'inlogGegevens' => 'json',
         'Note' => 'json',
+        'Status' => 'array',
     ];
 
 

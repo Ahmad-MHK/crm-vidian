@@ -28,11 +28,22 @@ return new class extends Migration
             $table->string('Password')->nullable();
             $table->json("InlogNaam")->nullable();
             $table->json("Note")->nullable();
+            $table->json("Status")->nullable();
             $table->string('Algemeen')->nullable();
             $table->string('Contactpersonen')->nullable();
             $table->string('LogBoek')->nullable();
             $table->string('inlogGegevens')->nullable();
             $table->longText('Notes')->nullable()->default('text');
+            $table->string('nieuwKlant')->nullable();
+            $table->string('nieuwAbonnee')->nullable();
+            $table->string('klant')->nullable();
+            $table->string('abonnee')->nullable();
+            $table->string('opzegd')->nullable();
+            $table->string('leverancier')->nullable();
+            $table->string('reseller')->nullable();
+            $table->string('zakelijkeKlant')->nullable();
+            $table->string('overige')->nullable();
+            $table->string('geenrelatie')->nullable();
             $table->timestamps();
         });
     }
