@@ -192,14 +192,13 @@ class Test01Resource extends Resource
                         'overige' => 'Overige',
                         'geenrelatie' => 'Geen Relatie',
                     ])
-                    // ->beforeStateUpdated(function ($record, $state) {}) // Runs before the state is saved to the database.
-                    // ->afterStateUpdated(function ($record, $state) {}) // Runs after the state is saved to the database.
                     ->toggleable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\viewAction::make(), //of u remove this u cant click go to view like: clicking in Bedrijfnaam get u to edit and not view
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -264,36 +263,29 @@ class Test01Resource extends Resource
                                     ->columns(1)
                                     ->schema([
                                         TextEntry::make('InlogNaam')
-                                        ->label('URL')
-                                        ->suffixAction(
-                                            Action::make('copyCostToPrice')
-                                                ->icon('heroicon-m-clipboard')
-                                                ->action(function (Test01 $record) {
-                                                    $record->Password;
-                                                    $record->save();
-                                                })
-                                        )
-                                        ,
+                                        ->label('URL'),
                                         TextEntry::make('UserName')
                                         ->label('Username')
-                                        ->suffixAction(
-                                            Action::make('copyCostToPrice')
-                                                ->icon('heroicon-m-clipboard')
-                                                ->action(function (Test01 $record) {
-                                                    $record->Password;
-                                                    $record->save();
-                                                })
-                                        ),
+                                        // ->suffixAction(
+                                        //     Action::make('copy')
+                                        //         ->icon('heroicon-m-clipboard')
+                                        //         ->action(function (Test01 $record) {
+                                        //             $record->UserName;
+                                        //             $record->save();
+                                        //         })
+                                        // )
+                                        ,
                                         TextEntry::make('Password')
                                         ->label('Password')
-                                        ->suffixAction(
-                                            Action::make('copyCostToPrice')
-                                                ->icon('heroicon-m-clipboard')
-                                                ->action(function (Test01 $record) {
-                                                    $record->Password;
-                                                    $record->save();
-                                                })
-                                        )
+                                        // ->suffixAction(
+                                        //     Action::make('copy')
+                                        //         ->icon('heroicon-m-clipboard')
+                                        //         ->action(function (Test01 $record) {
+                                        //             $record->Password ;
+                                        //             $record->save();
+                                        //         })
+                                        //         ->requiresConfirmation()
+                                        // )
                                         ,
                                     ])
                             ])

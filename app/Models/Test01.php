@@ -45,6 +45,7 @@ class Test01 extends Model
         'inlogGegevens' => 'json',
         'Note' => 'json',
         'Status' => 'array',
+        'Password' => 'json',
     ];
 
 

@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('Email')->nullable();
             $table->string('Phone')->nullable();
             $table->string('UserName')->nullable();
-            $table->string('Password')->nullable();
+            $table->json('Password')->nullable();
             $table->json("InlogNaam")->nullable();
             $table->json("Note")->nullable();
             $table->json("Status")->nullable();
